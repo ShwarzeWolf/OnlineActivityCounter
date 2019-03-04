@@ -6,7 +6,9 @@
   "icons": {"128": "icon_128.png"},
   "permissions": [
     "activeTab",
-  "tabs"],
+    "tabs",
+    "storage"
+  ],
   "browser_action": {
     "default_popup": "page.html",
     "default_title": "Press to find out how much time you spended on different sites "
