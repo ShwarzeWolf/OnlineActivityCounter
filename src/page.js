@@ -10,3 +10,6 @@ chrome.storage.local.get(function(urls){
         }
     }
 })
+/*
+chrome.storage.local.clear();
+*/
