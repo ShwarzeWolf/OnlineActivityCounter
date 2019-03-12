@@ -16,7 +16,7 @@ chrome.tabs.onCreated.addListener(function() {
 
             chrome.storage.local.set(items);
         });
-})
+    })
 });
 
 /*
@@ -28,7 +28,6 @@ chrome.tabs.onActiveChanged.addListener(function(){
         //alert(url);
     });
 });
-
 /*
 chrome.tabs.onUpdated.addListener(function(){
     alert("hello");
