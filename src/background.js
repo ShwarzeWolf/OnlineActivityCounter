@@ -4,7 +4,7 @@ chrome.tabs.onCreated.addListener(function() {
         let currentUrl = {};
 
         currentUrl.name = tabs[0].url;
-        currentUrl.time = new Date();
+        currentUrl.time = new Date().toDateString();
 
         chrome.storage.local.get(function(items) {
 

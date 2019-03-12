@@ -1,14 +1,12 @@
-chrome.storage.local.get(function(items){
-    if (Object.keys(items).length > 0 && items.data) {
+chrome.storage.local.get(function(urls){
 
-        for (var i = 0; i < items.data[i].length; i++){
-            let name = items.data[i].name;
-            let time = items.data[i].time;
+    if (Object.keys(urls).length > 0 && urls.data) {
+        for (let i = 0; i < urls.data.length; i++) {
+            let site = urls.data[i].name;
+            let time = urls.data[i].time;
+
+            let element = $(`<tr><td>${site}</td><td>${(time)}</td></tr>`);
+            element.appendTo("#tableBody");
         }
     }
-});
-
-        /*
-            let element = $(`<tr><td>${name}</td><td>${time}</td></tr>`);
-            element.appendTo("#tableBody");
-        */
+})
