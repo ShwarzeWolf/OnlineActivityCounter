@@ -1,10 +1,14 @@
+let lastFocusedUrl = "";
+let lastUpdateTime = Date.now();
+
 chrome.tabs.onCreated.addListener(function() {
     chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
         //here should be a function to proceed url to first letters
         let currentUrl = {};
+        let currentTime = Date.now();
 
         currentUrl.name = tabs[0].url;
-        currentUrl.time = new Date().toDateString();
+        currentUrl.time = currentTime - lastUpdateTime;
 
         chrome.storage.local.get(function(items) {
 
@@ -15,7 +19,11 @@ chrome.tabs.onCreated.addListener(function() {
             }
 
             chrome.storage.local.set(items);
+
         });
+
+        lastUpdateTime = currentTime;
+        lastFocusedUrl = currentUrl.name;
     })
 });
 
