@@ -1,29 +1,46 @@
-let lastFocusedUrl = "";
+let lastFocusedUrl = "newtab";
 let lastUpdateTime = Date.now();
 
 chrome.tabs.onCreated.addListener(function() {
     chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-        //here should be a function to proceed url to first letters
-        let currentUrl = {};
-        let currentTime = Date.now();
 
-        currentUrl.name = extractHostname(tabs[0].url);
-        currentUrl.time = currentTime - lastUpdateTime;
+        let currentUrlName = extractHostname(tabs[0].url);
+
+        let currentTime = Date.now();
+        let timeDifference = currentTime - lastUpdateTime;
+
+        let currentUrl = {};
 
         chrome.storage.local.get(function(items) {
 
             if (Object.keys(items).length > 0 && items.data) {
-                items.data.push(currentUrl);
+
+                for (var i = 0; i < items.data.length; i++) {
+                    if (lastFocusedUrl === items.data[i].name)
+                        break;
+                }
+
+                if (i === items.data.length){
+                    currentUrl.name = lastFocusedUrl;
+                    currentUrl.time = timeDifference;
+                    items.data.push(currentUrl);
+                }  else {
+                    items.data[i].time += timeDifference;
+                }
+
             } else {
+                currentUrl.name = lastFocusedUrl;
+                currentUrl.time = timeDifference;
                 items.data = [currentUrl];
             }
 
             chrome.storage.local.set(items);
 
+            lastUpdateTime = currentTime;
+            lastFocusedUrl = currentUrlName;
         });
 
-        lastUpdateTime = currentTime;
-        lastFocusedUrl = currentUrl.name;
+
     })
 });
 
