@@ -1,6 +1,22 @@
 let lastFocusedUrl = "newtab";
 let lastUpdateTime = Date.now();
 
+function extractHostname(url) {
+
+    if (url.indexOf("//") > -1) {
+        var hostname = url.split('/')[2];
+    }
+    else {
+        var hostname = url.split('/')[0];
+    }
+
+    hostname = hostname.split(':')[0];
+
+    hostname = hostname.split('?')[0];
+
+    return hostname;
+}
+
 function logTabs(){
     chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
 
@@ -46,34 +62,6 @@ function logTabs(){
 
 chrome.tabs.onCreated.addListener(logTabs);
 
-function extractHostname(url) {
+chrome.tabs.onUpdated.addListener(logTabs);
 
-    if (url.indexOf("//") > -1) {
-        var hostname = url.split('/')[2];
-    }
-    else {
-        var hostname = url.split('/')[0];
-    }
-
-    hostname = hostname.split(':')[0];
-
-    hostname = hostname.split('?')[0];
-
-    return hostname;
-}
-
-
-/*
-chrome.tabs.onActiveChanged.addListener(function(){
-    // I don't really get what does this construction do
-    chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-        let currentUrl = tabs[0].url;
-        //here should be a function to proceed url to first letters
-        //alert(url);
-    });
-});
-/*
-chrome.tabs.onUpdated.addListener(function(){
-    alert("hello");
-})
-*/
+chrome.tabs.onActiveChanged.addListener(logTabs);
