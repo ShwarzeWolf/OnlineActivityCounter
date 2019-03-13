@@ -1,7 +1,7 @@
 let lastFocusedUrl = "newtab";
 let lastUpdateTime = Date.now();
 
-chrome.tabs.onCreated.addListener(function() {
+function logTabs(){
     chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
 
         let currentUrlName = extractHostname(tabs[0].url);
@@ -42,7 +42,9 @@ chrome.tabs.onCreated.addListener(function() {
 
 
     })
-});
+}
+
+chrome.tabs.onCreated.addListener(logTabs);
 
 function extractHostname(url) {
 
