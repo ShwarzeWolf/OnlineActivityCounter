@@ -7,7 +7,7 @@ chrome.tabs.onCreated.addListener(function() {
         let currentUrl = {};
         let currentTime = Date.now();
 
-        currentUrl.name = tabs[0].url;
+        currentUrl.name = extractHostname(tabs[0].url);
         currentUrl.time = currentTime - lastUpdateTime;
 
         chrome.storage.local.get(function(items) {
@@ -26,6 +26,23 @@ chrome.tabs.onCreated.addListener(function() {
         lastFocusedUrl = currentUrl.name;
     })
 });
+
+function extractHostname(url) {
+
+    if (url.indexOf("//") > -1) {
+        var hostname = url.split('/')[2];
+    }
+    else {
+        var hostname = url.split('/')[0];
+    }
+
+    hostname = hostname.split(':')[0];
+
+    hostname = hostname.split('?')[0];
+
+    return hostname;
+}
+
 
 /*
 chrome.tabs.onActiveChanged.addListener(function(){
